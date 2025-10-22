@@ -11,10 +11,12 @@ import type {
     StudyPlan,
 } from '../types';
 
-// The API key is retrieved from environment variables.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Creates a new GoogleGenAI instance. This should be called before each API request
+// to ensure the most up-to-date API key is used.
+const getAi = () => new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const startChat = (): Chat => {
+    const ai = getAi();
     return ai.chats.create({
         model: 'gemini-2.5-flash',
     });
@@ -28,6 +30,7 @@ export const generateImageWithGemini = async (
     quality: 'standard' | 'high'
 ): Promise<string[]> => {
     try {
+        const ai = getAi();
         if (quality === 'high') {
             const fullPrompt = `${prompt}, ${style} style`;
             const response = await ai.models.generateImages({
@@ -87,6 +90,7 @@ export const editImageWithGemini = async (
     numberOfImages: number
 ): Promise<string[]> => {
     try {
+        const ai = getAi();
         const imagePart = {
             inlineData: {
                 data: base64ImageData,
@@ -135,6 +139,7 @@ export const generateLongFormText = async function* (
   length: WritingLength
 ): AsyncGenerator<string, void, unknown> {
   try {
+    const ai = getAi();
     const fullPrompt = `You are an expert writer. Task: Write a piece of content based on the following prompt. Prompt: "${prompt}" Tone: ${tone}. Format: ${format}. Length: ${length}.`;
     const response = await ai.models.generateContentStream({
       model: 'gemini-2.5-pro',
@@ -155,6 +160,7 @@ export const generateCode = async function* (
   existingCode?: string
 ): AsyncGenerator<string, void, unknown> {
   try {
+    const ai = getAi();
     let fullPrompt: string;
 
     if (existingCode) {
@@ -202,6 +208,7 @@ export const generateCode = async function* (
 
 export const performDeepResearch = async (query: string): Promise<ResearchResult> => {
   try {
+    const ai = getAi();
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: `Provide a comprehensive summary for the query: "${query}".`,
@@ -231,6 +238,7 @@ export const performDeepResearch = async (query: string): Promise<ResearchResult
 // Fix: Add the missing 'enhancePrompt' function to be used by the PromptEnhancerModal component.
 export const enhancePrompt = async (prompt: string): Promise<string> => {
   try {
+    const ai = getAi();
     const fullPrompt = `You are an expert prompt engineer. Take the following user's idea and transform it into a detailed, effective prompt for a large language model. The enhanced prompt should be clear, specific, and provide context to guide the AI towards a high-quality response. Do not add any introductory text or explanation, just provide the enhanced prompt. User's idea: "${prompt}"`;
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
@@ -245,6 +253,7 @@ export const enhancePrompt = async (prompt: string): Promise<string> => {
 
 export const generateStudyPlan = async (topic: string): Promise<StudyPlan> => {
   try {
+    const ai = getAi();
     const response = await ai.models.generateContent({
       model: "gemini-2.5-pro",
       contents: `Create a detailed, week-by-week study plan for someone wanting to learn about "${topic}". The plan should span a reasonable number of weeks (e.g., 4-8 weeks) and for each week, include a main theme and specific topics to cover. For each topic, provide a brief description and suggest 1-2 online resources (like articles, videos, or tutorials) with their URLs.`,
