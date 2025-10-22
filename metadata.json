@@ -1,0 +1,7 @@
+{
+  "name": "My-Ai Agent",
+  "description": "A fully functional AI agent website with polished UI and features for Chat, Image Generation, Writing, Building, Deep Research, and Learning, powered by Gemini.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

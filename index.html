@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My-Ai Agent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class', // Enable dark mode using a class
+        theme: {
+          extend: {
+            colors: {
+              // Light Theme
+              'light-bg': '#f9fafb',
+              'light-surface': '#ffffff',
+              'light-text-primary': '#111827',
+              'light-text-secondary': '#6b7280',
+              'light-border': '#e5e7eb',
+              
+              // Dark Theme (ChatGPT-inspired)
+              'dark-bg': '#212121',
+              'dark-surface': '#343541',
+              'dark-text-primary': '#ffffff',
+              'dark-text-secondary': '#d1d5db',
+              'dark-border': '#4b5563',
+
+              // Accent Colors with Gradient
+              'accent-start': '#3b82f6', // Blue
+              'accent-end': '#8b5cf6', // Violet
+            },
+            borderRadius: {
+              '2xl': '1rem',
+            },
+            boxShadow: {
+              'xl': '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+            },
+            animation: {
+              'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+              'typing-cursor': 'blink 1.2s infinite steps(1, start)',
+            },
+            keyframes: {
+              fadeInUp: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              blink: {
+                '0%, 100%': { 'background-color': 'transparent' },
+                '50%': { 'background-color': 'currentColor' },
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <style type="text/css">
+      .code-editor {
+        font-family: 'Fira Code', monospace;
+        font-size: 14px;
+        border: 1px solid #e5e7eb; /* light-border */
+        border-radius: 0.5rem;
+        background-color: #f9fafb; /* light-bg */
+        min-height: 16rem; /* Equivalent to rows=8 */
+      }
+      .dark .code-editor {
+        border-color: #4b5563; /* dark-border */
+        background-color: #212121; /* dark-bg */
+      }
+      .code-editor:focus-within {
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+        --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+        --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+        box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+        --tw-ring-color: #3b82f6; /* accent-start */
+      }
+      
+      .code-output .prism-editor,
+      .code-output pre[class*="language-"] {
+        background: none !important;
+        padding: 1rem !important;
+      }
+
+      .code-output .prism-editor__textarea:focus {
+        outline: none;
+      }
+      
+      .streaming-message .prose > *:last-child::after {
+        content: '';
+        display: inline-block;
+        width: 0.5rem; /* w-2 */
+        height: 1.25rem; /* h-5 */
+        background-color: currentColor;
+        animation: blink 1.2s infinite steps(1, start);
+        margin-left: 0.25rem; /* ml-1 */
+        vertical-align: text-bottom;
+      }
+    </style>
+    <script>
+      // Apply theme on initial load to prevent FOUC (Flash of Unstyled Content)
+      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.24.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "clsx": "https://aistudiocdn.com/clsx@^2.1.1",
+    "react-simple-code-editor": "https://aistudiocdn.com/react-simple-code-editor@^0.13.1",
+    "prismjs/": "https://aistudiocdn.com/prismjs@^1.29.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-light-bg dark:bg-dark-bg text-light-text-primary dark:text-dark-text-primary transition-colors duration-300 font-sans">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
