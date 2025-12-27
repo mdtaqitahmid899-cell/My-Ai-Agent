@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>My-Ai Agent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Global process shim for browser compatibility
+      window.process = { env: { API_KEY: '' } };
+      
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              'light-bg': '#f3f4f6',
+              'light-surface': '#ffffff',
+              'light-text-primary': '#111827',
+              'light-text-secondary': '#6b7280',
+              'light-border': '#e5e7eb',
+              'dark-bg': '#212121',
+              'dark-surface': '#2f2f2f',
+              'dark-text-primary': '#ececf1',
+              'dark-text-secondary': '#c5c5d2',
+              'dark-border': '#4b5563',
+              'accent-start': '#0ea5e9',
+              'accent-end': '#8b5cf6',
+            },
+            borderRadius: {
+              '2xl': '1rem',
+              '3xl': '1.5rem',
+            },
+            boxShadow: {
+              'xl': '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+              'glow': '0 0 15px rgba(139, 92, 246, 0.3)',
+            },
+            animation: {
+              'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+              'typing-cursor': 'blink 1.2s infinite steps(1, start)',
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+              fadeInUp: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              blink: {
+                '0%, 100%': { 'background-color': 'transparent' },
+                '50%': { 'background-color': 'currentColor' },
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <style type="text/css">
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+      .dark ::-webkit-scrollbar-thumb { background: #4b5563; }
+      .dark ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+      .code-editor { font-family: 'Fira Code', monospace; font-size: 14px; border: 1px solid #e5e7eb; border-radius: 0.5rem; background-color: #ffffff; min-height: 16rem; }
+      .dark .code-editor { border-color: #4b5563; background-color: #1e1e1e; }
+      .code-editor:focus-within { outline: 2px solid transparent; outline-offset: 2px; box-shadow: 0 0 0 calc(2px + 0px) #0ea5e9; }
+      .code-output .prism-editor, .code-output pre[class*="language-"] { background: none !important; padding: 1rem !important; }
+      .code-output .prism-editor__textarea:focus { outline: none; }
+      .streaming-message .prose > *:last-child::after { content: ''; display: inline-block; width: 0.5rem; height: 1.25rem; background-color: currentColor; animation: blink 1.2s infinite steps(1, start); margin-left: 0.25rem; vertical-align: text-bottom; }
+      .prose pre { background-color: #1e1e1e !important; border-radius: 0.75rem; padding-top: 3rem !important; position: relative; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border: 1px solid #374151; }
+      .prose pre::before { content: ''; position: absolute; top: 1rem; left: 1rem; width: 0.75rem; height: 0.75rem; background-color: #ff5f56; border-radius: 50%; box-shadow: 1.2rem 0 0 #ffbd2e, 2.4rem 0 0 #27c93f; }
+      .prose pre::after { content: 'Code'; position: absolute; top: 0.75rem; left: 0; right: 0; text-align: center; color: #9ca3af; font-size: 0.75rem; font-family: sans-serif; font-weight: 600; pointer-events: none; }
+    </style>
+    <script>
+      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+    <script type="importmap">
+    {
+      "imports": {
+        "react/": "https://aistudiocdn.com/react@^19.2.0/",
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "@google/genai": "https://aistudiocdn.com/@google/genai@^1.24.0",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "clsx": "https://aistudiocdn.com/clsx@^2.1.1",
+        "react-simple-code-editor": "https://aistudiocdn.com/react-simple-code-editor@^0.13.1",
+        "prismjs/": "https://aistudiocdn.com/prismjs@^1.29.0/"
+      }
+    }
+    </script>
+  <link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-light-bg dark:bg-dark-bg text-light-text-primary dark:text-dark-text-primary transition-colors duration-300 font-sans antialiased overflow-hidden fixed inset-0">
+    <div id="root" class="h-full w-full"></div>
+    <script type="module" src="./index.tsx"></script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
